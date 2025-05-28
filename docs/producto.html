@@ -181,12 +181,10 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    alert("Por favor inicia sesión para comprar este producto.");
+    alert("Por favor inicia sesión para continuar con la compra.");
     return;
   }
 
-  // Aquí puedes integrar tu enlace de Stripe con parámetros si fuera dinámico
-  // Por ahora usamos el enlace fijo de prueba que ya tienes:
   window.location.href = "https://buy.stripe.com/test_5kQcN47aebGo96h7IyeUU00";
 });
 

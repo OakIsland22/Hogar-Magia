@@ -256,14 +256,18 @@ btnCompra.addEventListener("click", async () => {
 
   if (!user) {
     alert("Por favor inicia sesión antes de realizar la compra.");
-    // Opcional: redirigir al login
-    // window.location.href = "login.html";
     return;
   }
 
-  // El usuario está logueado, continuar con el pago...
+  if (Object.keys(carrito).length === 0) {
+    alert("Tu carrito está vacío. Agrega al menos un producto para continuar.");
+    return;
+  }
+
+  // Redirección a Stripe si está logueado y hay productos
   window.location.href = "https://buy.stripe.com/test_5kQcN47aebGo96h7IyeUU00";
 });
+
 
 /*
 btnCompra.addEventListener("click", () => {
