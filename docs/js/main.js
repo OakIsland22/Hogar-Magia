@@ -142,6 +142,7 @@ let carrito = {};
   });
 }*/
 
+/*
 async function cargarProductos() {
   const { data: productos, error } = await supabase.from('productos').select('*');
 
@@ -168,6 +169,36 @@ async function cargarProductos() {
     productosContainer.appendChild(card);
   });
 }
+*/
+async function cargarProductos() {
+  const { data: productos, error } = await supabase.from('productos').select('*');
+
+  if (error) {
+    console.error('Error al cargar productos:', error);
+    productosContainer.innerHTML = "<p>Error al cargar productos.</p>";
+    return;
+  }
+
+  productosActuales = productos;
+  productosContainer.innerHTML = "";
+
+  productos.forEach(p => {
+    const card = document.createElement("div");
+    card.classList.add("producto");
+
+    card.innerHTML = `
+      <a href="producto.html?id=${p.producto_id}" class="producto-link">
+        <img src="${p.imagen}" alt="${p.nombre}">
+        <h3>${p.nombre}</h3>
+        <p>$${p.precio.toFixed(2)}</p>
+      </a>
+      <button class="agregar-carrito" data-id="${p.producto_id}" data-nombre="${p.nombre}" data-precio="${p.precio}">Agregar</button>
+    `;
+
+    productosContainer.appendChild(card);
+  });
+}
+
 
 // Agregar al carrito
 d.addEventListener("click", e => {
