@@ -177,9 +177,19 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       actualizarTotalCarrito();
     });
 
-    btnComprar.addEventListener("click", () => {
-      alert("Simulación de compra inmediata. Integra Stripe si lo deseas.");
-    });
+    btnComprar.addEventListener("click", async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    alert("Por favor inicia sesión para comprar este producto.");
+    return;
+  }
+
+  // Aquí puedes integrar tu enlace de Stripe con parámetros si fuera dinámico
+  // Por ahora usamos el enlace fijo de prueba que ya tienes:
+  window.location.href = "https://buy.stripe.com/test_5kQcN47aebGo96h7IyeUU00";
+});
+
 
     cargarProducto();
     actualizarTotalCarrito(); 
