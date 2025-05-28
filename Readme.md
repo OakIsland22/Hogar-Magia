@@ -16,9 +16,6 @@ Hogar&Magia es una tienda en línea especializada en productos decorativos y fun
 - 🔗 **App desplegada en GitHub Pages:**  
   [Pagína Web](https://oakisland22.github.io/Hogar-Magia/)
 
-- 💬 **Conversación en ChatGPT (desarrollo asistido):**  
-  [Enlace a conversación](https://chatgpt.com/g/g-p-68368b64dac08191a12da24e136a0944-paguina/c/68368bcd-bbb0-8001-b787-f36775bf7377)
-
 - 🧠 **Prompt y lógica de desarrollo:**  
   [prompt.md](docs/prompt.md)
 
