@@ -48,10 +48,34 @@ Hogar&Magia es una tienda en línea especializada en productos decorativos y fun
 - Buscador con sugerencias y historial
 
 ---
+## 🚀 Tecnologías utilizadas
 
-## 📌 Instrucciones para el profesor
+- **HTML + CSS + JavaScript**
+- **Supabase** (Auth + Realtime Database)
+- **Stripe** (Simulación de pagos en modo prueba)
+- **GitHub Pages** (despliegue final)
+- **Eleventy** (estructura base estática dentro de `/docs`)
 
-- Se ha invitado al profesor `jonmircha@gmail.com` como **Administrator** en Supabase.
-- El sistema está desplegado y funcional en GitHub Pages.
-- Todos los documentos requeridos están incluidos en el repositorio raíz.
+---
 
+## ✅ Funcionalidades implementadas
+
+- 🔐 Registro de usuarios con Supabase
+- ✉️ Confirmación de correo electrónico tras registro
+- 🔁 Recuperación de contraseña vía correo electrónico
+- 👤 Inicio de sesión y cierre de sesión con menú desplegable
+- 👁️ Vista guiada tras confirmar el correo
+- 🛍️ Catálogo dinámico desde Supabase (nombre, precio, imagen, descripción)
+- 🧾 Vista individual de cada producto (detalle tipo Amazon)
+- 🛒 Carrito de compras completo (agregar, modificar, eliminar, totales)
+- 🔎 Buscador de productos con historial y sin distinción de acentos
+- 💳 Simulación de venta con Stripe (modo prueba sandbox)
+- 📧 Confirmación de pedido con redirección a página personalizada
+
+---
+
+## 📁 Archivos requeridos incluidos
+
+- `README.md` con todos los enlaces e información del proyecto
+- `prompt.md` con los prompts utilizados para generar el proyecto
+- `tienda-online.md` y `modelado-tienda.md` con la conceptualización y estructura del e-Commerce
