@@ -213,6 +213,13 @@ function quitarItem(id) {
 }
 
 // Comprar
+
+btnCompra.addEventListener("click", () => {
+  window.location.href = "https://buy.stripe.com/test_5kQcN47aebGo96h7IyeUU00";
+});
+
+
+/*
 btnCompra.addEventListener("click", () => {
   if (Object.keys(carrito).length === 0) {
     alert("El carrito está vacío.");
@@ -228,7 +235,7 @@ btnCompra.addEventListener("click", () => {
     alert("¡Gracias por su compra!");
   }, 4000);
 });
-
+*/
 const loginViewDiv = d.getElementById("login-view");
 const registerViewDiv = d.getElementById("register-view");
 
@@ -402,7 +409,7 @@ searchBox.addEventListener("input", () => {
 
   // Filtrado activo en tiempo real
   const coincidencias = productosActuales.filter(p =>
-    p.nombre.toLowerCase().includes(termino)
+  normalizarTexto(p.nombre).includes(normalizarTexto(termino))
   );
 
   mostrarProductos(coincidencias); // ← actualiza productos en pantalla
@@ -529,3 +536,27 @@ btnLogout.addEventListener("click", async () => {
   loginView.classList.remove("hidden");
   d.getElementById("main-content").classList.add("hidden");
 });
+
+function mostrarProductos(productos) {
+  productosContainer.innerHTML = "";
+
+  productos.forEach(p => {
+    const card = document.createElement("div");
+    card.classList.add("producto");
+    card.innerHTML = `
+      <img src="${p.imagen}" alt="${p.nombre}">
+      <h3>${p.nombre}</h3>
+      <p>$${p.precio.toFixed(2)}</p>
+      <button class="agregar-carrito" data-id="${p.producto_id}" data-nombre="${p.nombre}" data-precio="${p.precio}">Agregar</button>
+    `;
+    productosContainer.appendChild(card);
+  });
+}
+
+
+function normalizarTexto(texto) {
+  return texto
+    .normalize("NFD")                     // separa letras y tildes
+    .replace(/[\u0300-\u036f]/g, "")     // elimina los acentos
+    .toLowerCase();                      // convierte a minúsculas
+}
