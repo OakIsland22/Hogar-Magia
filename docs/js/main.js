@@ -214,10 +214,25 @@ function quitarItem(id) {
 
 // Comprar
 
+/*
 btnCompra.addEventListener("click", () => {
   window.location.href = "https://buy.stripe.com/test_5kQcN47aebGo96h7IyeUU00";
 });
+*/
 
+btnCompra.addEventListener("click", async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    alert("Por favor inicia sesión antes de realizar la compra.");
+    // Opcional: redirigir al login
+    // window.location.href = "login.html";
+    return;
+  }
+
+  // El usuario está logueado, continuar con el pago...
+  window.location.href = "https://buy.stripe.com/test_5kQcN47aebGo96h7IyeUU00";
+});
 
 /*
 btnCompra.addEventListener("click", () => {
@@ -543,12 +558,24 @@ function mostrarProductos(productos) {
   productos.forEach(p => {
     const card = document.createElement("div");
     card.classList.add("producto");
+
+    /*
     card.innerHTML = `
       <img src="${p.imagen}" alt="${p.nombre}">
       <h3>${p.nombre}</h3>
       <p>$${p.precio.toFixed(2)}</p>
       <button class="agregar-carrito" data-id="${p.producto_id}" data-nombre="${p.nombre}" data-precio="${p.precio}">Agregar</button>
     `;
+    */
+    card.innerHTML = `
+  <a href="producto.html?id=${p.producto_id}" class="producto-link">
+    <img src="${p.imagen}" alt="${p.nombre}">
+    <h3>${p.nombre}</h3>
+    <p>$${p.precio.toFixed(2)}</p>
+  </a>
+  <button class="agregar-carrito" data-id="${p.producto_id}" data-nombre="${p.nombre}" data-precio="${p.precio}">Agregar</button>
+`;
+
     productosContainer.appendChild(card);
   });
 }
@@ -560,3 +587,33 @@ function normalizarTexto(texto) {
     .replace(/[\u0300-\u036f]/g, "")     // elimina los acentos
     .toLowerCase();                      // convierte a minúsculas
 }
+
+
+const resetView = d.getElementById("reset-password");
+const resetBtn = d.getElementById("btn-reset");
+const resetMsg = d.getElementById("reset-message");
+const emailReset = d.getElementById("email-reset");
+const showReset = d.getElementById("show-reset");
+const goBackLogin = d.getElementById("go-back-login");
+
+showReset.addEventListener("click", () => {
+  d.getElementById("login-view").classList.add("hidden");
+  resetView.classList.remove("hidden");
+});
+
+goBackLogin.addEventListener("click", () => {
+  resetView.classList.add("hidden");
+  d.getElementById("login-view").classList.remove("hidden");
+});
+
+resetBtn.addEventListener("click", async () => {
+  const { error } = await supabase.auth.resetPasswordForEmail(emailReset.value, {
+    redirectTo: "https://https://oakisland22.github.io/Hogar-Magia/"
+  });
+
+  if (error) {
+    resetMsg.textContent = "Error: " + error.message;
+  } else {
+    resetMsg.textContent = "Revisa tu correo para cambiar la contraseña.";
+  }
+});

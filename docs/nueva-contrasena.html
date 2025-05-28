@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Restablecer contraseña</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .reset-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    p {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="reset-container">
+    <h2>Restablecer tu contraseña</h2>
+    <input type="password" id="new-password" placeholder="Nueva contraseña" />
+    <button id="btn-new-password">Guardar nueva contraseña</button>
+    <p id="msg"></p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    const SUPABASE_URL = 'https://escrfqofrsxuqxpkcgpm.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzY3JmcW9mcnN4dXF4cGtjZ3BtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY1NDg4NDUsImV4cCI6MjA2MjEyNDg0NX0.NKWMcpmLgK9nEFsPTPDrrrw4AdjFxrCaPpFiSU9bg1E';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const btn = document.getElementById("btn-new-password");
+    const input = document.getElementById("new-password");
+    const msg = document.getElementById("msg");
+
+    btn.addEventListener("click", async () => {
+      const { error } = await supabase.auth.updateUser({
+        password: input.value
+      });
+
+      if (error) {
+        msg.textContent = "❌ Error: " + error.message;
+      } else {
+        msg.textContent = "✅ Contraseña actualizada. Ya puedes iniciar sesión.";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -49,6 +49,10 @@
   </div>
 </div>
 
+<div class="volver-inicio">
+  <a href="index.html">← Volver a la tienda</a>
+</div>
+
     <!-- LOGIN -->
   <div class="login-container hidden" id="login-view">
   <h1>Iniciar Sesión</h1>
@@ -63,7 +67,20 @@
     ¿No tienes cuenta?
     <a href="#" id="go-register">Regístrate aquí</a>
   </p>
+    <p style="text-align:center; margin-top: 10px;">
+  <a href="#" id="show-reset">¿Olvidaste tu contraseña?</a>
+</p>
+
+  <div id="reset-password" class="login-container hidden">
+    <h2>Recuperar Contraseña</h2>
+    <input type="email" id="email-reset" placeholder="Tu correo electrónico" required />
+    <button id="btn-reset">Enviar enlace de recuperación</button>
+    <p id="reset-message"></p>
+    <p><a href="#" id="go-back-login">Volver al inicio de sesión</a></p>
+    </div>
   </div>
+
+  
 
   <!-- REGISTRO -->
   <div class="login-container hidden" id="register-view">
