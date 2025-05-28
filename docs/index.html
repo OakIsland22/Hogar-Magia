@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tienda Hogar&Magia</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="main-content">
@@ -15,10 +16,18 @@
   <input type="text" id="search" placeholder="Buscar productos..." />
   <div id="search-suggestions" class="search-suggestions hidden"></div>
   
-  <div class="user-actions">
-    <button id="btn-login" class="btn-user">Iniciar Sesión</button>
-    <button id="btn-account" class="btn-user hidden">Mi Cuenta</button>
+<div class="user-actions">
+  <button id="btn-login" class="btn-user">Iniciar Sesión</button>
+
+  <div class="user-menu-container hidden" id="user-menu-container" style="position: relative;">
+    <button id="btn-account" class="btn-user">Mi Cuenta ▾</button>
+    <div id="user-dropdown" class="hidden" style="position: absolute; right: 0; top: 100%; background: white; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+      <span id="user-email" style="display: block; font-size: 0.9em; margin-bottom: 10px; color: #333;"></span>
+      <button id="btn-logout" class="btn-user" style="background: #dc3545; color: white; width: 100%;">Cerrar sesión</button>
+    </div>
   </div>
+</div>
+
   </header>
 
     <!-- TIENDA -->
@@ -89,6 +98,24 @@
   </p>
   </div>
 
+
+<div id="confirmacion-view" class="hidden" style="text-align:center; padding: 40px;">
+  <h2>¡Casi terminamos!</h2>
+  <p>Te hemos enviado un correo de confirmación.</p>
+  <p>Revisa tu <strong>bandeja de entrada</strong> y también la <strong>carpeta de spam o correo no deseado</strong>.</p>
+  <p>Haz clic en el enlace del correo para activar tu cuenta.</p>
+  <p>Cuando termines, puedes regresar aquí y dar clic en el botón de abajo para continuar.</p>
+  <button id="ya-confirme" class="btn-user">Ya confirmé</button>
+  <div style="margin-top: 20px;">
+    <p>Accesos rápidos a tu correo:</p>
+    <a href="https://mail.google.com" target="_blank">Gmail</a> |
+    <a href="https://outlook.live.com" target="_blank">Outlook</a> |
+    <a href="https://mail.yahoo.com" target="_blank">Yahoo</a>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

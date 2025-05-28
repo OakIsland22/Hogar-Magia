@@ -303,3 +303,50 @@ body {
   font-weight: bold;
   text-align: center;
 }
+
+#confirmacion-view {
+  max-width: 500px;
+  margin: 60px auto;
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+#confirmacion-view h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+#confirmacion-view p {
+  font-size: 16px;
+  color: #555;
+  margin: 10px 0;
+}
+
+#confirmacion-view a {
+  color: #007bff;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+#confirmacion-view a:hover {
+  text-decoration: underline;
+}
+
+#ya-confirme {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #28a745;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#ya-confirme:hover {
+  background: #218838;
+}

@@ -3,10 +3,12 @@ const d = document;
 const loginView = d.getElementById("login-view");
 const storeView = d.getElementById("store-view");
 const loginForm = d.getElementById("login-form");
+const registerForm = d.getElementById("register-form");
 const username = d.getElementById("username");
 const password = d.getElementById("password");
 const userError = d.getElementById("user-error");
 const passError = d.getElementById("pass-error");
+const mainContent = document.getElementById("main-content");
 
 const productosContainer = d.getElementById("productos-container");
 const carritoLista = d.getElementById("lista-carrito");
@@ -17,7 +19,7 @@ const mensajeCompra = d.getElementById("mensaje-compra");
 let carrito = {};
 
 // Validar login
-loginForm.addEventListener("submit", e => {
+/*loginForm.addEventListener("submit", e => {
   e.preventDefault();
   userError.textContent = "";
   passError.textContent = "";
@@ -35,10 +37,10 @@ loginForm.addEventListener("submit", e => {
   storeView.classList.remove("hidden");
   d.getElementById("main-content").classList.remove("hidden"); // volver a mostrar todo
   cargarProductos();
-});
+}); */
 
 //Cargando Mis Productos
-function cargarProductos() {
+/*function cargarProductos() {
   const productos = [
     {
       id: 1,
@@ -138,6 +140,33 @@ function cargarProductos() {
     `;
     productosContainer.appendChild(card);
   });
+}*/
+
+async function cargarProductos() {
+  const { data: productos, error } = await supabase.from('productos').select('*');
+
+  if (error) {
+    console.error('Error al cargar productos:', error);
+    productosContainer.innerHTML = "<p>Error al cargar productos.</p>";
+    return;
+  }
+
+  console.log("Productos desde Supabase:", productos); // <- AÑADE ESTO
+
+  productosActuales = productos;
+  productosContainer.innerHTML = "";
+
+  productos.forEach(p => {
+    const card = document.createElement("div");
+    card.classList.add("producto");
+    card.innerHTML = `
+      <img src="${p.imagen}" alt="${p.nombre}">
+      <h3>${p.nombre}</h3>
+      <p>$${p.precio.toFixed(2)}</p>
+      <button class="agregar-carrito" data-id="${p.producto_id}" data-nombre="${p.nombre}" data-precio="${p.precio}">Agregar</button>
+    `;
+    productosContainer.appendChild(card);
+  });
 }
 
 // Agregar al carrito
@@ -217,7 +246,7 @@ d.getElementById("go-login").addEventListener("click", (e) => {
 });
 
 // Validación de registro
-d.getElementById("register-form").addEventListener("submit", function (e) {
+/*d.getElementById("register-form").addEventListener("submit", function (e) {
   e.preventDefault();
 
   const name = d.getElementById("reg-name").value.trim();
@@ -246,25 +275,89 @@ d.getElementById("register-form").addEventListener("submit", function (e) {
     }, 1500);
   }
 });
+*/
+
 // Simulación de login de usuario
 let usuarioLogeado = false;
 
 const btnLogin = d.getElementById("btn-login");
-const btnAccount = d.getElementById("btn-account");
 const searchInput = d.getElementById("search");
 
-// Al iniciar sesión desde login-form (ya existente)
-loginForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const u = username.value.trim();
-  const p = password.value.trim();
+// Al iniciar sesión desde login-form (ya existente)/////////////////LogIn
 
-  if (u && p) {
-    usuarioLogeado = true;
-    actualizarUsuarioUI();
-    loginView.classList.add("hidden");
-  }
+registerForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = d.getElementById("reg-email").value.trim();
+  const password = d.getElementById("reg-password").value.trim();
+  const confirm = d.getElementById("reg-confirm").value.trim();
+
+  if (!email.includes("@")) return alert("Correo inválido");
+  if (password.length < 6) return alert("La contraseña debe tener al menos 6 caracteres");
+  if (password !== confirm) return alert("Las contraseñas no coinciden");
+
+  const { error } = await supabase.auth.signUp({ email, password });
+
+  if (error) return alert("Error al registrar: " + error.message);
+
+  registerViewDiv.classList.add("hidden");
+  confirmacionView.classList.remove("hidden");
 });
+
+function actualizarUIusuario(user) {
+  if (user) {
+    btnLogin.classList.add("hidden");
+    userMenuContainer.classList.remove("hidden");
+    userEmailSpan.textContent = user.email;
+  } else {
+    btnLogin.classList.remove("hidden");
+    userMenuContainer.classList.add("hidden");
+    userEmailSpan.textContent = "";
+  }
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+  await cargarProductos();
+  const user = await obtenerUsuarioActual();
+  actualizarUIusuario(user);
+});
+
+async function obtenerUsuarioActual() {
+  const { data } = await supabase.auth.getUser();
+  return data?.user || null;
+}
+
+
+////////////////////////////////////////
+
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = d.getElementById("username").value.trim();
+  const password = d.getElementById("password").value.trim();
+
+  if (!email || !password) {
+    alert("Todos los campos son obligatorios");
+    return;
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    // Si el error tiene ese mensaje, mostramos personalizado
+    if (error.message.includes("Invalid login credentials")) {
+      alert("Correo o contraseña incorrectos");
+    } else if (error.message.includes("Email not confirmed")) {
+      alert("Debes confirmar tu correo antes de iniciar sesión");
+    } else {
+      alert("Error al iniciar sesión: " + error.message);
+    }
+    return;
+  }
+
+  loginView.classList.add("hidden");
+  mainContent.classList.remove("hidden");
+  actualizarUIusuario(data.user);
+});
+
 
 // Mostrar login al dar clic
 btnLogin.addEventListener("click", () => {
@@ -274,7 +367,7 @@ btnLogin.addEventListener("click", () => {
 });
 
 // Actualiza el botón de la barra superior
-function actualizarUsuarioUI() {
+/*function actualizarUsuarioUI() {
   if (usuarioLogeado) {
     btnLogin.classList.add("hidden");
     btnAccount.classList.remove("hidden");
@@ -283,6 +376,8 @@ function actualizarUsuarioUI() {
     btnAccount.classList.add("hidden");
   }
 }
+*/
+
 
 const searchBox = d.getElementById("search");
 searchBox.addEventListener("focus", () => {
@@ -402,7 +497,35 @@ d.addEventListener("click", (e) => {
 });
 
 // Mostrar productos al cargar la página (aunque no se haya iniciado sesión)
-window.addEventListener("DOMContentLoaded", () => {
+/*window.addEventListener("DOMContentLoaded", () => {
   cargarProductos();
   actualizarUsuarioUI(); // Para manejar correctamente el botón de sesión
+});*/
+
+/////////////redireccionar a coreo 
+const confirmacionView = d.getElementById("confirmacion-view");
+const btnYaConfirme = d.getElementById("ya-confirme");
+
+btnYaConfirme.addEventListener("click", () => {
+  confirmacionView.classList.add("hidden");
+  loginView.classList.remove("hidden");
+});
+
+
+const btnAccount = d.getElementById("btn-account");
+const btnLogout = d.getElementById("btn-logout");
+const userMenuContainer = d.getElementById("user-menu-container");
+const userDropdown = d.getElementById("user-dropdown");
+const userEmailSpan = d.getElementById("user-email");
+
+btnAccount.addEventListener("click", () => {
+  userDropdown.classList.toggle("hidden");
+});
+
+btnLogout.addEventListener("click", async () => {
+  await supabase.auth.signOut();
+  userDropdown.classList.add("hidden");
+  actualizarUIusuario(null);
+  loginView.classList.remove("hidden");
+  d.getElementById("main-content").classList.add("hidden");
 });
